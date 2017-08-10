@@ -2,7 +2,8 @@ import java.util.Arrays;
 
 public class TextAppenderImpl implements TextAppender {
 
-    private TextContainer [] containers = new TextContainer[100];
+    private TextContainer [] containers = new TextContainer[10];
+    private int firstOpenIndex = 0;
 
 
     @Override
@@ -11,18 +12,17 @@ public class TextAppenderImpl implements TextAppender {
         // check and make sure that key isn't already in use
         boolean foundKey = false;
         for (int i = 0; i < containers.length; i++) {
-            if (containers[i] != null && containers[i].getKey() == key) foundKey = true;
+            if (containers[i] != null && containers[i].getKey().equals(key)) foundKey = true;
         }
         if (foundKey == false) {
             // since key doesn't exist, we create a new TextContainer
             TextContainer container1 = new TextContainer(key);
             container1.append(text);
 
-            // then put it in containers TODO: how do I find the correct index?
-            containers[0] = container1;
+            // then put it in containers
+            containers[firstOpenIndex++] = container1;
             throw new DoesNotExistException("key not found");
         } else {
-            System.out.println("key already exists!");
             throw new CannotAppendException("key already exists");
         }
     }
@@ -33,13 +33,12 @@ public class TextAppenderImpl implements TextAppender {
         // need to check for existence of key in our list of TextContainers
         boolean foundKey = false;
         for (int i = 0; i < containers.length; i++) {
-            if (containers[i] != null && containers[i].getKey() == key) foundKey = true;
+            if (containers[i] != null && containers[i].getKey().equals(key)) foundKey = true;
         }
         if (foundKey == false) {
             // no TextContainer with the given key exists
             throw new DoesNotExistException("key not found");
         } else {
-            System.out.println("key already exists!");
             throw new AlreadyExistsException("key already exists");
         }
     }
