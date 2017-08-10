@@ -58,6 +58,16 @@ public class Main {
             System.out.println("catch: " + e);
         }
 
+        try {
+            appender1.close("second");
+        }
+        catch (DoesNotExistException e) {
+            System.out.println("catch: " + e);
+        }
+        catch (NeedsFlushException e) {
+            System.out.println("catch: " + e);
+        }
+
         System.out.println(appender1.toString());
 
         System.out.println("Program executed!");

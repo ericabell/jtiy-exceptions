@@ -53,7 +53,21 @@ public class TextAppenderImpl implements TextAppender {
     public void close(String key) throws DoesNotExistException, NeedsFlushException {
         // if key doesn't exist throw DoesNotExistException
 
-        // throws
+        // throws NeedsFlushException if the TextContainer's flushed == false
+        // find the TextContainer with the given key
+        boolean foundKey = false;
+        for (int i = 0; i < containers.length; i++) {
+            if (containers[i] != null && containers[i].getKey().equals(key)) {
+                foundKey = true;
+                if (containers[i].isFlushed() == false) {
+                    throw new NeedsFlushException("Key: " + key + " needs flushing!");
+                }
+            }
+        }
+        if( foundKey == false ) {
+            // we never found the key
+            throw new DoesNotExistException("Key: " + key + " does not exist.");
+        }
     }
 
     @Override
