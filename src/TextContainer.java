@@ -4,6 +4,7 @@ public class TextContainer {
     private boolean flushed;
 
     public TextContainer(String key) {
+        this.text = "";
         this.key = key;
     }
 
