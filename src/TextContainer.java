@@ -28,4 +28,13 @@ public class TextContainer {
     public void flush() {
         flushed = true;
     }
+
+    @Override
+    public String toString() {
+        return "TextContainer{" +
+                "key='" + key + '\'' +
+                ", text='" + text + '\'' +
+                ", flushed=" + flushed +
+                '}';
+    }
 }
