@@ -7,18 +7,41 @@ public class TextAppenderImpl implements TextAppender {
 
     @Override
     public void append(String key, String text) throws DoesNotExistException, CannotAppendException {
+
         // check and make sure that key isn't already in use
+        boolean foundKey = false;
+        for (int i = 0; i < containers.length; i++) {
+            if (containers[i] != null && containers[i].getKey() == key) foundKey = true;
+        }
+        if (foundKey == false) {
+            // since key doesn't exist, we create a new TextContainer
+            TextContainer container1 = new TextContainer(key);
+            container1.append(text);
 
-        // since key doesn't exist, we create a new TextContainer
-
-        // then put it in containers
+            // then put it in containers TODO: how do I find the correct index?
+            containers[0] = container1;
+            throw new DoesNotExistException("key not found");
+        } else {
+            System.out.println("key already exists!");
+            throw new CannotAppendException("key already exists");
+        }
     }
 
-    @Override
-    public void open(String key) throws AlreadyExistsException {
-        // need to check for existence of key in our list of TextContainers
 
-        // if the key exists, we throw AlreadyExistsException
+    @Override
+    public void open(String key) throws AlreadyExistsException, DoesNotExistException {
+        // need to check for existence of key in our list of TextContainers
+        boolean foundKey = false;
+        for (int i = 0; i < containers.length; i++) {
+            if (containers[i] != null && containers[i].getKey() == key) foundKey = true;
+        }
+        if (foundKey == false) {
+            // no TextContainer with the given key exists
+            throw new DoesNotExistException("key not found");
+        } else {
+            System.out.println("key already exists!");
+            throw new AlreadyExistsException("key already exists");
+        }
     }
 
     @Override
