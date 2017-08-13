@@ -68,6 +68,8 @@ public class Main {
             System.out.println("catch: " + e);
         }
 
+
+        // toString() will print out all the TextContainers
         System.out.println(appender1.toString());
 
         System.out.println("Program executed!");

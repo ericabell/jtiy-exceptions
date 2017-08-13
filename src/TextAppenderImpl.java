@@ -19,9 +19,15 @@ public class TextAppenderImpl implements TextAppender {
             TextContainer container1 = new TextContainer(key);
             container1.append(text);
 
-            // then put it in containers
-            containers[firstOpenIndex++] = container1;
-            throw new DoesNotExistException("key not found");
+            // then put it in containers, if there is space
+            if(firstOpenIndex < 9) {
+                containers[firstOpenIndex++] = container1;
+                throw new DoesNotExistException("key not found, appending...");
+            } else {
+                // appender is full
+                throw new DoesNotExistException("appender is full, cannot append...");
+            }
+
         } else {
             throw new CannotAppendException("key already exists");
         }
