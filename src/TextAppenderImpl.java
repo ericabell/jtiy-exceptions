@@ -35,17 +35,10 @@ public class TextAppenderImpl implements TextAppender {
 
 
     @Override
-    public void open(String key) throws AlreadyExistsException, DoesNotExistException {
-        // need to check for existence of key in our list of TextContainers
-        boolean foundKey = false;
-        for (int i = 0; i < containers.length; i++) {
-            if (containers[i] != null && containers[i].getKey().equals(key)) foundKey = true;
-        }
-        if (foundKey == false) {
-            // no TextContainer with the given key exists
-            throw new DoesNotExistException("key not found");
-        } else {
-            throw new AlreadyExistsException("key already exists");
+    public void open(String key) throws AlreadyExistsException {
+        // Very DRY
+        if (findContainer(key) != null) {
+            throw new AlreadyExistsException("key " + key + " already exists");
         }
     }
 
@@ -81,5 +74,14 @@ public class TextAppenderImpl implements TextAppender {
         return "TextAppenderImpl{" +
                 "containers=" + Arrays.toString(containers) +
                 '}';
+    }
+
+    private TextContainer findContainer(String key) {
+        for (TextContainer container : containers) {
+            if (container != null && container.getKey().equals(key)) {
+                return container;
+            }
+        }
+
     }
 }
