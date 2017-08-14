@@ -17,23 +17,29 @@ public class Main {
         // append at key: "first"
         try {
             appender1.append("first", "string to append");
+            System.out.println("ERROR should have thrown DoesNotExistException");
         }
         catch (DoesNotExistException e) {
-            System.out.println("catch: " + e);
+            System.out.println("SUCCESS could not append to first");
         }
         catch (CannotAppendException e) {
-            System.out.println("catch: " + e);
+            System.out.println("ERROR should not get this ");
         }
 
         // try to open at key: "first"
         try {
             appender1.open("first");
+            System.out.println("SUCCESS was able to open first");
         }
-        catch (DoesNotExistException e) {
-            System.out.println("catch: " + e);
+        catch (Exception e) {
+            System.out.println("ERROR: should have been able to open first " + e.getMessage());
         }
-        catch (AlreadyExistsException e) {
-            System.out.println("catch: " + e);
+
+        try {
+            appender1.open("first");
+            System.out.println("ERROR: should not have been able to open first again");
+        } catch (AlreadyExistsException e) {
+            System.out.println("SUCCESS: could not open first again");
         }
 
         // append at key: "second"
